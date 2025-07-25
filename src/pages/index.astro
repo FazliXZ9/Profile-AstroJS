@@ -1,11 +1,372 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
----
+const profil = {
+  nama: "Muhammad Fazli",
+  jabatan: "Student of Universitas Subang | Staff at Diskominfo Subang",
+  bioSingkat: "",
+  instansi: "",
+  fotoProfil: "/IMG_20.jpg",
+  linkedInUrl: "https://www.linkedin.com/in/",
+  email: "muhammadfazlimukhtar@gmail.com",
+  // --- PENAMBAHAN DATA BARU --- //
+  githubUrl: "https://github.com/SainzX12",
+  discordUrl: "https://discord.com/users/INTERNET POSITIF !!!" 
+};
 
-<Layout>
-	<Welcome />
+const keahlian = ["Financial Administration", "Web Programing", "Mobile Programing", "Basic Networking", "Virtualization (Proxmox VE)"];
+
+const proyek = [
+  {
+    judul: "",
+    deskripsi: "",
+    gambar: "https://placehold.co/600x800/0A2E5B/FFFFFF?text=coming soon",
+    link: "#"
+  },
+  {
+    judul: "",
+    deskripsi: "",
+    gambar: "https://placehold.co/600x800/007BFF/FFFFFF?text=coming soon",
+    link: "#"
+  },
+  {
+    judul: "",
+    deskripsi: "",
+    gambar: "https://placehold.co/600x800/343A40/FFFFFF?text=coming soon",
+    link: "#"
+  },
+    {
+    judul: "",
+    deskripsi: "",
+    gambar: "https://placehold.co/600x800/5a67d8/FFFFFF?text=coming soon",
+    link: "#"
+  }
+];
+---
+<Layout title={`Profil - ${profil.nama}`}>
+  
+  <button id="theme-toggle" class="theme-toggle" title="Ubah Tema">
+    <i class="fas fa-moon"></i>
+    <i class="fas fa-sun"></i>
+  </button>
+  
+  <main class="main-container">
+    <section class="hero-section">
+      <div class="profile-header">
+        <img src={profil.fotoProfil} alt={`Foto ${profil.nama}`} class="profile-picture" />
+        <h1 class="profile-name">{profil.nama}</h1>
+        <p class="profile-title">{profil.jabatan}</p>
+      </div>
+      <p class="profile-bio">{profil.bioSingkat}</p>
+      <div class="profile-buttons">
+        <a href={`mailto:${profil.email}`} class="btn btn-primary">
+          <i class="fas fa-envelope"></i> Email
+        </a>
+        <a href={profil.linkedInUrl} target="_blank" class="btn btn-secondary">
+          <i class="fa-brands fa-linkedin"></i> LinkedIn
+        </a>
+      </div>
+    </section>
+
+    <section class="content-section" id="keahlian-section">
+      <h2>Keahlian</h2>
+      <div class="skills-container">
+        {keahlian.map(skill => <span class="skill-tag">{skill}</span>)}
+      </div>
+    </section>
+
+    <section class="project-section" id="portofolio-section">
+      <h2>Portofolio</h2>
+      <div class="project-container">
+        {proyek.map(p => (
+          <a href={p.link} class="project-card">
+            <img src={p.gambar} alt={p.judul} class="project-image"/>
+            <div class="project-overlay">
+              <h3>{p.judul}</h3>
+              <p>{p.deskripsi}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <footer class="contact-section">
+      <h2>Mari Berkolaborasi</h2>
+      <p>Terbuka untuk diskusi dan kolaborasi.</p>
+
+      <div class="social-icons">
+        <a href={profil.linkedInUrl} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn">
+          <i class="fa-brands fa-linkedin"></i>
+        </a>
+        <a href={profil.githubUrl} target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub">
+          <i class="fa-brands fa-github"></i>
+        </a>
+        <a href={`mailto:${profil.email}`} aria-label="Email" title="Email">
+          <i class="fas fa-envelope"></i>
+        </a>
+        <a href={profil.discordUrl} target="_blank" rel="noopener noreferrer" aria-label="Discord" title="Discord">
+          <i class="fa-brands fa-discord"></i>
+        </a>
+      </div>
+      </footer>
+  </main>
 </Layout>
+
+<script>
+  // Dark Mode
+  const themeToggle = document.getElementById('theme-toggle');
+  const body = document.body;
+  if (localStorage.getItem('theme') === 'dark') { body.classList.add('dark-mode'); }
+
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark' : 'light');
+    });
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target); 
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('#keahlian-section, #portofolio-section, .contact-section').forEach(el => {
+    observer.observe(el);
+  });
+</script>
+
+
+<style>
+/* --- MOBILE --- */
+:root {
+  --bg-light: #f7f9fc;
+  --bg-dark: #101010;
+  --card-light: #ffffff;
+  --card-dark: #1c1c1c;
+  --text-light: #1a1a1a;
+  --text-dark: #e8e8e8;
+  --primary-color: #007aff;
+  --grey-light: #e1e4e8;
+  --grey-dark: #333333;
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+body {
+  background-color: var(--bg-light);
+  color: var(--text-light);
+  font-family: var(--font-body);
+  transition: background-color 0.3s, color 0.3s;
+}
+body.dark-mode {
+  background-color: var(--bg-dark);
+  color: var(--text-dark);
+}
+.main-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  overflow-x: hidden;
+}
+
+h2 {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-light);
+  text-align: center;
+}
+body.dark-mode h2 { color: var(--text-dark); }
+
+.theme-toggle {
+  position: fixed; top: 1rem; right: 1rem;
+  background-color: var(--card-light);
+  border: 1px solid var(--grey-light);
+  color: #555; width: 45px; height: 45px;
+  border-radius: 50%; cursor: pointer; z-index: 1000;
+  font-size: 18px; display: grid; place-items: center;
+}
+body.dark-mode .theme-toggle {
+  background-color: var(--card-dark);
+  border-color: var(--grey-dark);
+  color: #aaa;
+}
+.theme-toggle .fa-sun { display: none; }
+.theme-toggle .fa-moon { display: inline-block; }
+body.dark-mode .theme-toggle .fa-sun { display: inline-block; }
+body.dark-mode .theme-toggle .fa-moon { display: none; }
+
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-section > * {
+  opacity: 0;
+  animation: fadeInUp 0.7s ease-out forwards;
+}
+.profile-picture { animation-delay: 0.1s; }
+.profile-name { animation-delay: 0.3s; }
+.profile-title { animation-delay: 0.5s; }
+.profile-bio { animation-delay: 0.7s; }
+.profile-buttons { animation-delay: 0.9s; }
+
+#keahlian-section, #portofolio-section, .contact-section {
+  opacity: 0;
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  transform: translateY(30px);
+}
+#keahlian-section.is-visible, #portofolio-section.is-visible, .contact-section.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.skill-tag {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+#keahlian-section.is-visible .skill-tag {
+  opacity: 1;
+  transform: scale(1);
+}
+.skills-container .skill-tag:nth-child(1) { transition-delay: 0.1s; }
+.skills-container .skill-tag:nth-child(2) { transition-delay: 0.2s; }
+.skills-container .skill-tag:nth-child(3) { transition-delay: 0.3s; }
+.skills-container .skill-tag:nth-child(4) { transition-delay: 0.4s; }
+.skills-container .skill-tag:nth-child(5) { transition-delay: 0.5s; }
+.skills-container .skill-tag:nth-child(6) { transition-delay: 0.6s; }
+
+
+.hero-section { text-align: center; padding: 4rem 0; }
+.profile-header { margin-bottom: 1.5rem; }
+.profile-picture {
+  width: 120px; height: 120px;
+  border-radius: 50%; object-fit: cover;
+  border: 4px solid var(--card-light);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  margin-bottom: 1rem;
+}
+body.dark-mode .profile-picture { border-color: var(--card-dark); }
+.profile-name { font-family: var(--font-heading); font-size: 2rem; font-weight: 700; margin: 0; }
+.profile-title { font-size: 1.1rem; color: #666; margin: 0.25rem 0 0 0; }
+body.dark-mode .profile-title { color: #aaa; }
+.profile-bio { font-size: 1rem; line-height: 1.7; max-width: 40ch; margin: 1.5rem auto 0 auto; }
+.profile-buttons { margin-top: 2rem; display: grid; gap: 0.75rem; }
+.btn {
+  display: flex; justify-content: center; align-items: center;
+  gap: 0.75rem; text-decoration: none; font-weight: 600;
+  font-size: 1rem; padding: 1rem; border-radius: 12px;
+  transition: transform 0.2s, background-color 0.2s;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary { background-color: var(--primary-color); color: white; }
+.btn-secondary {
+  background-color: var(--card-light); color: var(--text-light); border: 1px solid var(--grey-light);
+}
+body.dark-mode .btn-secondary {
+  background-color: var(--card-dark); color: var(--text-dark); border-color: var(--grey-dark);
+}
+
+.content-section, .project-section, .contact-section { padding: 3rem 0; }
+.skills-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; }
+.skill-tag {
+  background-color: var(--card-light); border: 1px solid var(--grey-light);
+  padding: 0.5rem 1rem; border-radius: 20px; font-weight: 500; font-size: 0.9rem;
+}
+body.dark-mode .skill-tag { background-color: var(--card-dark); border-color: var(--grey-dark); }
+
+.project-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding: 1rem 0 1rem 1.5rem; 
+  margin: 0 -1.5rem; 
+  scrollbar-width: none;
+}
+.project-container::-webkit-scrollbar { display: none; }
+
+.project-card {
+  flex: 0 0 75%; 
+  max-width: 300px;
+  aspect-ratio: 3/4;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  color: white;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  transition: transform 0.3s;
+}
+.project-card:active { transform: scale(0.98); }
+
+.project-image { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+.project-card:hover .project-image { transform: scale(1.05); }
+
+.project-overlay {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 1.5rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+}
+.project-overlay h3 { font-size: 1.5rem; margin: 0 0 0.25rem 0; color: white; text-align: left; }
+.project-overlay p { font-size: 0.9rem; line-height: 1.5; color: rgba(255,255,255,0.85); text-align: left; }
+
+.contact-section { text-align: center; }
+.contact-section p { max-width: 45ch; margin: -1rem auto 0 auto; color: #666; }
+body.dark-mode .contact-section p { color: #aaa; }
+
+/* --- PENAMBAHAN GAYA IKON SOSIAL --- */
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+.social-icons a {
+  color: var(--text-light);
+  font-size: 1.75rem; /* Ukuran ikon */
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+body.dark-mode .social-icons a {
+  color: var(--text-dark);
+}
+.social-icons a:hover {
+  color: var(--primary-color);
+  transform: translateY(-5px); /* Efek mengangkat saat disentuh */
+}
+
+/* --- PERBAIKAN UNTUK TAMPILAN DESKTOP --- */
+@media (min-width: 768px) {
+  h2 { font-size: 2rem; }
+  .main-container { padding: 2.5rem; }
+  
+  .profile-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .hero-section { padding-top: 5rem; padding-bottom: 2rem; }
+  .profile-picture { width: 140px; height: 140px; }
+  .profile-name { font-size: 2.5rem; }
+
+  .project-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    overflow-x: visible;
+    margin: 0;
+    padding: 1rem 0;
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    flex: auto;
+    max-width: none;
+    aspect-ratio: 4/3;
+  }
+}
+</style>
